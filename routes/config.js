@@ -41,7 +41,7 @@ router.get('/admin', (req, res, next) => {
       next(err);
     }
   } else {
-    res.status(403).send({ error: 'Only the admin account can read the management configuration file..' });
+    res.status(403).send({ error: 'Only the admin account can read the management configuration file.' });
   }
 });
 

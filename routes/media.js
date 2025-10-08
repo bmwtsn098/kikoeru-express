@@ -60,7 +60,7 @@ router.get('/stream/RJ:id/:trackFile([\\s\\S]*)', param('id').isInt(), (req, res
           })
           .catch(err => next(err));
       } else {
-        res.status(500).send({ error: `找不到文件夹: "${work.root_folder}"，请尝试重启服务器或重新扫描.` });
+        res.status(500).send({ error: `Cannot find folder: "${work.root_folder}". Please try restarting the server or rescanning.` });
       }
     })
     .catch(err => next(err));
@@ -101,7 +101,7 @@ router.get('/download/RJ:id/:trackFile([\\s\\S]*)', param('id').isInt(), (req, r
           })
           .catch(err => next(err));
       } else {
-        res.status(500).send({ error: `找不到文件夹: "${work.root_folder}"，请尝试重启服务器或重新扫描.` });
+        res.status(500).send({ error: `Cannot find folder: "${work.root_folder}". Please try restarting the server or rescanning.` });
       }
     });
 });
@@ -122,24 +122,24 @@ router.get('/check-lrc/:id/:index', param('id').isInt(), param('index').isInt(),
             let responseSent = false;
 
             if (!work.lyric_status) {
-              res.send({ result: false, message: '不存在歌词文件', mediaPath: '' });
+              res.send({ result: false, message: 'No lyric file exists', mediaPath: '' });
             } else {
               const lrcFileName = track.title.substring(0, track.title.lastIndexOf('.')) + '.lrc';
-              // 文件名、子目录名相同
+              // File name and subdirectory name are the same
               tracks.forEach(trackItem => {
                 if (trackItem.title === lrcFileName) {
-                  res.send({ result: true, message: '找到歌词文件', mediaPath: trackItem.mediaPath });
+                  res.send({ result: true, message: 'Lyric file found', mediaPath: trackItem.mediaPath });
                   responseSent = true;
                 }
               });
               if (!responseSent) {
-                res.send({ result: false, message: '该文件不存在歌词文件', mediaPath: '' });
+                res.send({ result: false, message: 'No lyric file exists for this file', mediaPath: '' });
               }
             }
           })
           .catch(err => next(err));
       } else {
-        res.status(500).send({ error: `找不到文件夹: "${work.root_folder}"，请尝试重启服务器或重新扫描.` });
+        res.status(500).send({ error: `Cannot find folder: "${work.root_folder}". Please try restarting the server or rescanning.` });
       }
     })
     .catch(err => next(err));

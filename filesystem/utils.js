@@ -244,10 +244,10 @@ async function* getFolderList(rootFolder, current = '', depth = 0, callback = fu
     } catch (err) {
       if (err.code === 'EPERM') {
         if (err.path && !err.path.endsWith('System Volume Information')) {
-          console.log(' ! 无法访问', err.path);
+          console.log(' ! Unable to access', err.path);
           callback({
             level: 'info',
-            message: ` ! 无法访问 ${err.path}`
+            message: ` ! Unable to access ${err.path}`
           });
         }
       } else {

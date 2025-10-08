@@ -18,7 +18,7 @@ const initSocket = (server) => {
       if (user.name === 'admin') {
         done(null, user);
       } else {
-        done(null, false, '只有 admin 账号能登录管理后台.');
+        done(null, false, 'Only the admin account can log in to the admin panel.');
       }
     }));
   }
@@ -29,7 +29,7 @@ const initSocket = (server) => {
   io.on('connection', function (socket) {
     // console.log('connection');
     socket.emit('success', {
-      message: '成功登录管理后台.',
+      message: 'Successfully logged into the admin backend.',
       user: socket.request.user,
       auth: config.auth
     });

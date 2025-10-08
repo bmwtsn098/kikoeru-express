@@ -57,9 +57,9 @@ router.get('/tracks/:id', param('id').isInt(), (req, res, next) => {
       if (rootFolder) {
         getTrackList(req.params.id, path.join(rootFolder.path, work.dir), JSON.parse(work.memo))
           .then(tracks => res.send(toTree(tracks, work.title, work.dir, rootFolder)))
-          .catch(() => res.status(500).send({ error: '获取文件列表失败，请检查文件是否存在或重新扫描清理' }));
+          .catch(() => res.status(500).send({ error: 'Failed to get file list, please check if the file exists or rescan/clean.' }));
       } else {
-        res.status(500).send({ error: `找不到文件夹: "${work.root_folder}"，请尝试重启服务器或重新扫描.` });
+        res.status(500).send({ error: `Cannot find folder: "${work.root_folder}". Please try restarting the server or rescanning.` });
       }
     })
     .catch(err => next(err));
@@ -142,7 +142,7 @@ router.get(
         totalCount: totalCount[0]['count']
       });
     } catch (err) {
-      res.status(500).send({ error: '服务器错误' });
+      res.status(500).send({ error: 'Server error' });
       console.error(err);
       // next(err);
     }
@@ -161,9 +161,9 @@ router.get('/:field(circle|tag|va)s/:id', param('field').isIn(['circle', 'tag', 
         res.send(item);
       } else {
         const errorMessage = {
-          circle: `社团${req.params.id}不存在`,
-          tag: `标签${req.params.id}不存在`,
-          va: `声优${req.params.id}不存在`
+          circle: `Circle ${req.params.id} does not exist`,
+          tag: `Tag ${req.params.id} does not exist`,
+          va: `Voice actor ${req.params.id} does not exist`
         };
         res.status(404).send({ error: errorMessage[req.params.field] });
       }
@@ -233,7 +233,7 @@ router.get('/search', async (req, res, next) => {
       totalCount: totalCount[0]['count']
     });
   } catch (err) {
-    res.status(500).send({ error: '查询过程中出错' });
+    res.status(500).send({ error: 'Error occurred during query' });
     console.error(err);
     next(err);
   }

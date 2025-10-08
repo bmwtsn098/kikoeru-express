@@ -76,18 +76,18 @@ app.use(express.static(path.join(__dirname, './dist')));
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') { 
-    // 验证错误
+    // Authentication error
     res.set("WWW-Authenticate", "Bearer realm=\"Authorization Required\"");
     res.status(401).send({ error: err.message });
   } else if (err.code === 'SQLITE_ERROR') {
     if (err.message.indexOf('no such table') !== -1) {
-      res.status(500).send({ error: '数据库结构尚未建立，请先执行扫描.'});
+      res.status(500).send({ error: 'Database schema not initialized, please run scan first.'});
     }
   } else {
     console.error(new Date().toJSON(), 'Kikoeru log:', err);
     if (process.env.NODE_ENV === 'production' || config.production) {
       // Do not send excess error messages to the client on production mode
-      res.status(500).send({ error: '服务器错误' });
+      res.status(500).send({ error: 'Server error' });
     } else {
       res.status(500).send({ error: err.message || err });
     }
@@ -106,7 +106,7 @@ if (config.httpsEnabled) {
     },app);
     httpsSuccess = true;
   } catch (err) {
-    console.error('HTTPS服务器启动失败，请检查证书位置以及是否文件可读')
+    console.error('Failed to start HTTPS server, please check certificate location and file readability')
     console.error(err);
   }
 }

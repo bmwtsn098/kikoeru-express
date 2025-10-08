@@ -19,8 +19,8 @@ router.get('/',
     if(!isValidRequest(req, res)) return;
 
     const currentPage = parseInt(req.query.page) || 1;
-    // 通过 "音声id, 贩卖日, 评价, 用户评价, 售出数, 评论数量, 价格, 平均评价, 全年龄新作" 排序
-    // ['id', 'release', 'rating', 'dl_count', 'review_count', 'price', 'rate_average_2dp, nsfw']
+  // Sort by "audio id, release date, rating, user review, sales count, review count, price, average rating, all-ages new work"
+  // ['id', 'release', 'rating', 'dl_count', 'review_count', 'price', 'rate_average_2dp, nsfw']
     const order = req.query.order || 'release';
     const sort = req.query.sort || 'desc';
     const offset = (currentPage - 1) * PAGE_SIZE;
@@ -41,7 +41,7 @@ router.get('/',
         }
       });
     } catch(err) {
-      res.status(500).send({error: '查询过程中出错'});
+      res.status(500).send({error: 'Error occurred during query'});
       console.error(err)
     }
 });
@@ -70,12 +70,12 @@ router.put('/',
     db.updateUserReview(username, req.body.work_id, req.body.rating, req.body.review_text, req.body.progress, starOnly, progressOnly)
         .then(() => {
           if (progressOnly) {
-            res.send({ message: '更新进度成功' });
+            res.send({ message: 'Progress updated successfully' });
           } else {
-            res.send({ message: '评价成功' });
+            res.send({ message: 'Review submitted successfully' });
           }
         }).catch((err) =>{
-          res.status(500).send({ error: '评价失败，服务器错误' });
+          res.status(500).send({ error: 'Review failed, server error' });
           console.error(err);
         })
 });
@@ -89,7 +89,7 @@ router.delete('/',
     let username = config.auth ? req.user.name : 'admin';
     db.deleteUserReview(username, req.query.work_id)
       .then(() => {
-        res.send({message: '删除标记成功'});
+        res.send({message: 'Tag deleted successfully'});
       }).catch((err) => next(err));
 });
 

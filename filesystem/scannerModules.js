@@ -605,7 +605,7 @@ async function performUpdate(options = null) {
 
   const counts = await refreshWorks(baseQuery, 'id', processor);
 
-  logger.finish(`扫描完成: 更新 ${counts.updated} 个，失败 ${counts.failed} 个.`);
+  logger.finish(`Scan complete: Updated ${counts.updated} 个，Failed ${counts.failed} 个.`);
   db.knex.destroy();
   if (counts.failed) process.exit(1);
 }

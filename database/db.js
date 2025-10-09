@@ -378,7 +378,7 @@ const createUser = (user) =>
       .first()
       .then((res) => {
         if (res) {
-          throw new Error(`用户 ${user.name} 已存在.`);
+          throw new Error(`User already exists: ${user.name}.`);
         }
         return trx("t_user").insert(user);
       })
@@ -396,7 +396,7 @@ const updateUserPassword = (user, newPassword) =>
       .first()
       .then((res) => {
         if (!res) {
-          throw new Error("用户名或密码错误.");
+          throw new Error("Invalid username or password.");
         }
         return trx("t_user").where("name", "=", user.name).update({
           password: newPassword,
@@ -415,7 +415,7 @@ const resetUserPassword = (user) =>
       .first()
       .then((res) => {
         if (!res) {
-          throw new Error("用户名错误.");
+          throw new Error("Invalid username.");
         }
         return trx("t_user").where("name", "=", user.name).update({
           password: "password",

@@ -23,10 +23,15 @@ const insertWorkMetadata = async (work) => {
         .onConflict('id') // 使用 onConflict 代替 'insert or ignore'
         .ignore();
 
+      // ASMR API returns ID without leading zeros for works with 7 digits
+      const paddedWorkID = ('' + work.id).length === 6 
+      ? '' + work.id 
+      : ('' + work.id).padStart(8, '0');
+
       // 插入 t_work
       await trx("t_work")
         .insert({
-          id: work.id,
+          id: paddedWorkID,
           root_folder: work.rootFolderName,
           dir: work.dir,
           title: work.title,
@@ -56,7 +61,7 @@ const insertWorkMetadata = async (work) => {
       // 插入 r_tag_work 关系
       const tagRelations = work.tags.map(tag => ({
         tag_id: tag.id,
-        work_id: work.id,
+        work_id: paddedWorkID,
       }));
       await trx("r_tag_work").insert(tagRelations);
 
@@ -72,7 +77,7 @@ const insertWorkMetadata = async (work) => {
       // 插入 r_va_work 关系
       const vaRelations = work.vas.map(va => ({
         va_id: va.id,
-        work_id: work.id,
+        work_id: paddedWorkID,
       }));
       await trx("r_va_work").insert(vaRelations);
 

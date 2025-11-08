@@ -396,7 +396,7 @@ async function tryCreateAdminUser() {
     // Create built-in admin account
     await db.createUser({ name: 'admin', password: md5('admin'), group: 'administrator' });
   } catch (err) {
-    if (err.message.indexOf('已存在') === -1) {
+    if (err.message.indexOf('User already exists') === -1) {
       logger.main.error(` ! Error occurred while creating admin account: ${err.message}`);
       process.exit(1);
     }
